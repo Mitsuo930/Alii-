@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>💖 Will You Be My Valentine? 💖</title>
+  <style>
+    body { margin:0; background: url('bg.jpg') no-repeat center/cover; font-family: sans-serif; }
+    #question { text-align:center; margin-top:50px; font-size:24px; color:white; }
+    .btn { font-size:20px; padding:10px 20px; margin:20px; cursor:pointer; }
+    #hearts { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+    .heart { position:absolute; font-size:20px; animation:floatUp 3s linear forwards; }
+    @keyframes floatUp { 0% {transform:translateY(0);} 100% {transform:translateY(-500px);} }
+  </style>
+</head>
+<body>
+  <div id="hearts"></div>
+  <div id="question">💘 Will you be my Valentine? 💘</div>
+  <div style="text-align:center;">
+    <button class="btn" onclick="playVideo('me.mp4')">Yes 💕</button>
+    <button class="btn" onclick="playVideo('aray mo.mp4')">No 😢</button>
+  </div>
+  <video id="videoPlayer" style="display:none; width:100%; height:auto;" controls></video>
+
+  <script>
+    function playVideo(file) {
+      document.getElementById('videoPlayer').src = file;
+      document.getElementById('videoPlayer').style.display = 'block';
+    }
+
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.fontSize = (12 + Math.random()*20) + 'px';
+      heart.textContent = '❤️';
+      document.getElementById('hearts').appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    }, 400);
+  </script>
+</body>
+</html>
