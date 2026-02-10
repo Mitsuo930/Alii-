@@ -8,7 +8,7 @@
       margin: 0; 
       background: url('bg.jpg') no-repeat center/cover; 
       font-family: sans-serif; 
-      overflow-x: hidden;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -21,6 +21,7 @@
       font-size: 5vw; 
       color: white; 
       line-height: 1.2;
+      z-index: 2;
     }
     .btn { 
       font-size: 5vw; 
@@ -31,10 +32,10 @@
       border: none;
       background-color: rgba(255, 255, 255, 0.8);
       transition: transform 0.2s;
+      z-index: 2;
     }
-    .btn:active {
-      transform: scale(0.95);
-    }
+    .btn:active { transform: scale(0.95); }
+
     #hearts { 
       position: fixed; 
       top: 0; 
@@ -54,14 +55,18 @@
       0% { transform: translateY(0); opacity: 1; } 
       100% { transform: translateY(-120vh); opacity: 0; } 
     }
+
+    /* Fullscreen video style */
     #videoPlayer {
-      display: none; 
-      width: 90vw; 
-      max-width: 600px; 
-      height: auto; 
-      margin: 20px auto;
-      border-radius: 15px;
-      z-index: 2;
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 3;
+      background: black;
     }
   </style>
 </head>
@@ -78,29 +83,32 @@
   <video id="videoPlayer" controls></video>
 
   <script>
-    // Function to play video with autoplay on mobile
     function playVideo(file) {
       const video = document.getElementById('videoPlayer');
       video.src = file;
       video.style.display = 'block';
-      video.muted = true; // start muted for autoplay to work
+      video.muted = true;       // start muted for autoplay
       video.autoplay = true;
 
+      // Play video and unmute
       video.play().then(() => {
-        video.muted = false; // unmute after playback starts
-      }).catch(err => {
-        console.log('Autoplay blocked:', err);
-      });
+        video.muted = false;
+      }).catch(err => console.log('Autoplay blocked:', err));
 
+      // Hide the question and buttons
+      document.getElementById('question').style.display = 'none';
+      document.querySelectorAll('.btn').forEach(btn => btn.style.display = 'none');
+
+      // Scroll to video (optional)
       video.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Heart animation for mobile
+    // Heart animation
     setInterval(() => {
       const heart = document.createElement('div');
       heart.className = 'heart';
       heart.style.left = Math.random() * window.innerWidth + 'px';
-      heart.style.fontSize = (4 + Math.random() * 6) + 'vw'; // responsive size
+      heart.style.fontSize = (4 + Math.random() * 6) + 'vw';
       heart.textContent = '❤️';
       document.getElementById('hearts').appendChild(heart);
       setTimeout(() => heart.remove(), 3000);
