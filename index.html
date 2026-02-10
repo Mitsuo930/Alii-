@@ -4,46 +4,46 @@
   <title>💖 Will You Be My Valentine? 💖</title>
   <style>
     body { 
-      margin:0; 
+      margin: 0; 
       background: url('bg.jpg') no-repeat center/cover; 
       font-family: sans-serif; 
       overflow-x: hidden;
     }
     #question { 
-      text-align:center; 
-      margin-top:50px; 
-      font-size:24px; 
-      color:white; 
+      text-align: center; 
+      margin-top: 50px; 
+      font-size: 24px; 
+      color: white; 
     }
     .btn { 
-      font-size:20px; 
-      padding:10px 20px; 
-      margin:20px; 
-      cursor:pointer; 
+      font-size: 20px; 
+      padding: 10px 20px; 
+      margin: 20px; 
+      cursor: pointer; 
     }
     #hearts { 
-      position:absolute; 
-      top:0; 
-      left:0; 
-      width:100%; 
-      height:100%; 
-      pointer-events:none; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      pointer-events: none; 
       overflow: hidden;
     }
     .heart { 
-      position:absolute; 
-      font-size:20px; 
-      animation:floatUp 3s linear forwards; 
+      position: absolute; 
+      font-size: 20px; 
+      animation: floatUp 3s linear forwards; 
     }
     @keyframes floatUp { 
-      0% {transform:translateY(0);} 
-      100% {transform:translateY(-500px);} 
+      0% { transform: translateY(0); } 
+      100% { transform: translateY(-500px); } 
     }
     #videoPlayer {
-      display:none; 
-      width:100%; 
-      height:auto; 
-      margin-top:20px;
+      display: none; 
+      width: 100%; 
+      height: auto; 
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -60,15 +60,23 @@
   <video id="videoPlayer" controls></video>
 
   <script>
-    // Function to play video with autoplay
+    // Function to play video with autoplay reliably
     function playVideo(file) {
       const video = document.getElementById('videoPlayer');
       video.src = file;
       video.style.display = 'block';
-      video.autoplay = true;  // enable autoplay
-      video.muted = false;    // keep sound on
-      video.play().catch(err => console.log('Autoplay blocked:', err));
-      video.scrollIntoView({ behavior: 'smooth' }); // scroll to video
+      video.muted = true;     // start muted to allow autoplay
+      video.autoplay = true;
+
+      video.play().then(() => {
+        // Unmute after playback starts
+        video.muted = false;
+      }).catch(err => {
+        console.log('Autoplay blocked:', err);
+      });
+
+      // Scroll video into view
+      video.scrollIntoView({ behavior: 'smooth' });
     }
 
     // Heart animation
@@ -84,4 +92,3 @@
   </script>
 </body>
 </html>
-
